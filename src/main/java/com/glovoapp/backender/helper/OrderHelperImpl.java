@@ -6,6 +6,7 @@ import com.glovoapp.backender.util.DistanceCalculator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,11 @@ public class OrderHelperImpl implements OrderHelper {
 
     @Override
     public List<Order> handleCourierOrdersRestriction(List<Order> orders, Courier currentCourier) {
+
+        if(currentCourier == null){
+            return new LinkedList<>();
+        }
+
         List<Order> currentOrderList = orders;
         if (!currentCourier.getBox() && restrictBoxFilter) {
             currentOrderList = currentOrderList.stream().filter(order ->

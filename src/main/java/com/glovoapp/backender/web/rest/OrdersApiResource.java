@@ -20,13 +20,9 @@ public class OrdersApiResource implements OrdersApi {
     private static final Logger log = LoggerFactory.getLogger(OrdersApiResource.class);
 
     private final OrderService orderService;
-    private final ObjectMapper objectMapper;
-    private final HttpServletRequest request;
 
-    public OrdersApiResource(OrderService orderService, ObjectMapper objectMapper, HttpServletRequest request) {
+    public OrdersApiResource(OrderService orderService) {
         this.orderService = orderService;
-        this.objectMapper = objectMapper;
-        this.request = request;
     }
 
     public List<OrderVM> orders() {
@@ -34,29 +30,13 @@ public class OrdersApiResource implements OrdersApi {
     }
 
     @Override
-    public ResponseEntity<List<OrderVM>> ordersByCourierId(@ApiParam(value = "Id of the courier for the orders search", required = true) @PathVariable("courierId") String courierId) {
-        ResponseEntity<List<OrderVM>> validateRequest = validateRequest();
-        if (validateRequest != null) return validateRequest;
+    public ResponseEntity<List<OrderVM>> ordersByCourierId(@ApiParam(value = "Id of the courier for the orders search", required = true)
+                                                               @PathVariable("courierId") String courierId) {
         return ResponseEntity.ok(orderService.findAllByCourierId(courierId));
     }
 
     @Override
     public ResponseEntity<List<OrderVM>> ordersUsingGET() {
-        ResponseEntity<List<OrderVM>> validateRequest = validateRequest();
-        if (validateRequest != null) return validateRequest;
         return ResponseEntity.ok(orderService.findAllOrders());
-    }
-
-    private ResponseEntity<List<OrderVM>> validateRequest() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<List<OrderVM>>(objectMapper.readValue("[ {  \"description\" : \"description\",  \"id\" : \"id\"}, {  \"description\" : \"description\",  \"id\" : \"id\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return null;
     }
 }
