@@ -1,10 +1,9 @@
 package com.glovoapp.backender.util;
 
 import com.glovoapp.backender.domain.Location;
-import com.glovoapp.backender.util.DistanceCalculator;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DistanceCalculatorTest {
     @Test

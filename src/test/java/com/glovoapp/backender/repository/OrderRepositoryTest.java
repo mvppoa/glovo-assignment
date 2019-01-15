@@ -3,7 +3,6 @@ package com.glovoapp.backender.repository;
 
 import com.glovoapp.backender.domain.Location;
 import com.glovoapp.backender.domain.Order;
-import com.glovoapp.backender.repositories.CourierRepository;
 import com.glovoapp.backender.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping
 public class OrdersApiResource implements OrdersApi {
 
     private static final Logger log = LoggerFactory.getLogger(OrdersApiResource.class);
@@ -55,7 +54,7 @@ public class OrdersApiResource implements OrdersApi {
                 return new ResponseEntity<List<OrderVM>>(objectMapper.readValue("[ {  \"description\" : \"description\",  \"id\" : \"id\"}, {  \"description\" : \"description\",  \"id\" : \"id\"} ]", List.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<List<OrderVM>>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
         return null;
