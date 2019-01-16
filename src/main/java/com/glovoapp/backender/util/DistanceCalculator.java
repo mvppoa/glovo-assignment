@@ -9,6 +9,10 @@ import static java.lang.Math.*;
  */
 public class DistanceCalculator {
 
+    private DistanceCalculator() {
+        //Hidden constructor for static method
+    }
+
     private static final int EARTH_RADIUS = 6371;
 
     /**

@@ -1,6 +1,5 @@
 package com.glovoapp.backender.cucumber.step;
 
-import com.glovoapp.backender.domain.Order;
 import com.glovoapp.backender.web.rest.OrdersApiResource;
 import com.glovoapp.backender.web.rest.vm.OrderVM;
 import com.google.gson.Gson;
@@ -8,20 +7,18 @@ import com.google.gson.reflect.TypeToken;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.hamcrest.Matchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import javax.validation.constraints.AssertTrue;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsArrayContainingInOrder.arrayContaining;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -78,11 +75,8 @@ public class CouriersOrderSearchStepdefs extends StepDefs {
         Type type = new TypeToken<List<OrderVM>>() {
         }.getType();
         List<OrderVM> orderVMS = new Gson().fromJson(result, type);
-        orderVMS.forEach(orderVM -> {
-            validItems.forEach(validItem -> {
-                assertFalse(orderVM.getDescription().toLowerCase().contains(validItem.toLowerCase()));
-            });
-        });
+        orderVMS.forEach(orderVM -> validItems.forEach(validItem ->
+                assertFalse(orderVM.getDescription().toLowerCase().contains(validItem.toLowerCase()))));
     }
 
     @Then("^It does not return any orders that contains the distances higher than 5KMs$")
@@ -98,11 +92,16 @@ public class CouriersOrderSearchStepdefs extends StepDefs {
     }
 
     @Then("^Returns a list of ordervms in the proper order$")
-    public void returnsAListOfOrdervmsInTheProperOrder() throws Exception{
-        actions.andExpect(status().isOk())
+    public void returnsAListOfOrdervmsInTheProperOrder() throws Exception {
+        String result = actions.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$[*].id").value(Matchers.containsinOrder("order-f44762e8eb0d", "order-eb69a1ec6a3d",
-                        "order-21fa7ee99624","order-50800b932298","order-ad6408f60eb9","order-322919652412",
-                        "order-bac0ba295e31","order-da5bb5e3a09c","order-80bce95470d3","order-9a33229f814e","order-29510b2af039")));
+                .andReturn().getResponse().getContentAsString();
+
+        Type type = new TypeToken<List<OrderVM>>() {
+        }.getType();
+        List<OrderVM> orderVMS = new Gson().fromJson(result, type);
+        assertThat(orderVMS.stream().map(OrderVM::getId).limit(11).toArray(), arrayContaining("order-f44762e8eb0d", "order-9e343c7ca610",
+                "order-eb69a1ec6a3d","order-21fa7ee99624","order-bfa3d13dcb85","order-50800b932298",
+                "order-ad6408f60eb9","order-e7dafc391e9a","order-35ae9cf0d5ee","order-bd169eae5a81","order-861a74872b00"));
     }
 }

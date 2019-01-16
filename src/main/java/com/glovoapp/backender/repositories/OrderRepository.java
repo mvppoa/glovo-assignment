@@ -12,8 +12,11 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ *  Order class imported from the main project.
+ */
 @Repository
+//TODO - Refactor this class to make it actually use a database
 public class OrderRepository {
 
     private final List<Order> orders;
@@ -24,7 +27,7 @@ public class OrderRepository {
             }.getType();
             orders = new Gson().fromJson(reader, type);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Invalid file provided", e);
         }
     }
     public List<Order> findAll() {

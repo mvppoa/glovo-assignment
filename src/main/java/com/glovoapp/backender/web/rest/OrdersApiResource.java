@@ -1,17 +1,14 @@
 package com.glovoapp.backender.web.rest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.glovoapp.backender.services.OrderService;
 import com.glovoapp.backender.web.rest.vm.OrderVM;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -32,11 +29,13 @@ public class OrdersApiResource implements OrdersApi {
     @Override
     public ResponseEntity<List<OrderVM>> ordersByCourierId(@ApiParam(value = "Id of the courier for the orders search", required = true)
                                                                @PathVariable("courierId") String courierId) {
+        log.debug("Entered method to find order by courrier id {}", courierId);
         return ResponseEntity.ok(orderService.findAllByCourierId(courierId));
     }
 
     @Override
     public ResponseEntity<List<OrderVM>> ordersUsingGET() {
+        log.debug("Entered method to find all orders");
         return ResponseEntity.ok(orderService.findAllOrders());
     }
 }

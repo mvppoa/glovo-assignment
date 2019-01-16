@@ -13,6 +13,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Courier class imported from the main project.
+ */
+//TODO - Refactor this class to make it actually use a database
 @Repository
 public class CourierRepository {
 
@@ -24,7 +28,7 @@ public class CourierRepository {
             }.getType();
             couriers = new Gson().fromJson(reader, type);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Invalid file provided", e);
         }
     }
 
