@@ -8,4 +8,4 @@ This is a Java8 Spring Boot project. Get familiar with it and import it into you
 
 After that, start with the [WORDING](./WORDING.md). Good luck :)!
 
-[![CircleCI](https://circleci.com/gh/mvppoa/glovo-assignment.svg?style=svg)](https://circleci.com/gh/mvppoa/glovo-assignment)
+[![CircleCI](https://circleci.com/gh/mvppoa/glovo-assignment.svg)](https://circleci.com/gh/mvppoa/glovo-assignment)
