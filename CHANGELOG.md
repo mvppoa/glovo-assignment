@@ -4,3 +4,5 @@
 - Added cucumber to apply BDD 
 - Added a few spring dependencies to package the project more easily 
 - Implemented features required in the wording file
+- Added circleCI to the project
+- Downgraded JUnit to be compatible with Cucumber
