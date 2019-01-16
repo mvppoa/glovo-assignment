@@ -4,51 +4,49 @@ import com.glovoapp.backender.domain.Courier;
 import com.glovoapp.backender.domain.Location;
 import com.glovoapp.backender.enums.Vehicle;
 import com.glovoapp.backender.repositories.CourierRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Properties;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.Assert.*;
 
-class CourierRepositoryTest {
+public class TestCourierRepositoryTest {
 
     private CourierRepository courierRepository;
 
-    @BeforeAll
-    void setUp() throws IOException {
-        InputStream input = new FileInputStream("application.properties");
+    @Before
+    public void setUp() throws IOException {
+        InputStreamReader input = new InputStreamReader(TestCourierRepositoryTest.class.getResourceAsStream("/application.properties"));
         Properties prop = new Properties();
         prop.load(input);
         this.courierRepository = new CourierRepository(prop.getProperty("backender.resources.couriers.path"));
     }
 
     @Test
-    void findOneExisting() {
-        Courier courier = this.courierRepository.findById("courier-1");
-        Courier expected = new Courier().withId("courier-1")
+    public void findOneExisting() {
+        Courier courier = this.courierRepository.findById("courier-faa2186e65f2");
+
+        Courier expected = new Courier().withId("courier-faa2186e65f2")
                 .withBox(true)
-                .withName("Manolo Escobar")
-                .withVehicle(Vehicle.MOTORCYCLE)
-                .withLocation(new Location(41.3965463, 2.1963997));
+                .withName("Esteban Golson")
+                .withVehicle(Vehicle.ELECTRIC_SCOOTER)
+                .withLocation(new Location(41.39087699632735, 2.1784116992018028));
 
         assertEquals(expected, courier);
     }
 
     @Test
-    void findOneNotExisting() {
+    public void findOneNotExisting() {
         Courier courier = this.courierRepository.findById("bad-courier-id");
         assertNull(courier);
     }
 
     @Test
-    void findAll() {
+    public void findAll() {
         List<Courier> all = this.courierRepository.findAll();
         assertFalse(all.isEmpty());
     }
